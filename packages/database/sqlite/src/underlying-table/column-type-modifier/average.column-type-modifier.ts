@@ -12,6 +12,7 @@ import {
   UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
@@ -77,6 +78,10 @@ export class AverageColumnTypeModifier extends BaseColumnTypeModifier<AverageFie
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
   date(): void {
     const newColumn = new UnderlyingDateColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
@@ -90,7 +95,7 @@ export class AverageColumnTypeModifier extends BaseColumnTypeModifier<AverageFie
     this.castAverageColumn(newColumn)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   tree(): void {
     throw new Error('Method not implemented.')

@@ -18,6 +18,7 @@ import type {
   IClsService,
   IFieldValueVisitor,
   IdFieldValue,
+  JsonFieldValue,
   LookupFieldValue,
   MultiSelectFieldValue,
   NumberFieldValue,
@@ -93,6 +94,9 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   }
   email(value: EmailFieldValue): void {
     this.setData(this.fieldId, value.unpack())
+  }
+  json(value: JsonFieldValue): void {
+    this.setData(this.fieldId, JSON.stringify(value.value))
   }
   color(value: ColorFieldValue): void {
     this.setData(this.fieldId, value.unpack())
@@ -173,7 +177,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
 
     const knex = this.em.getKnex()
 
-    const underlyingTable = new AdjacencyListTable(this.tableId, field)
+    const underlyingTable = AdjacencyListTable.fromField(this.tableId, field)
 
     const query = knex
       .queryBuilder()

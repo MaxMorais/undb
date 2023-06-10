@@ -7,6 +7,7 @@ import {
   UnderlyingCurrencyColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
@@ -32,6 +33,10 @@ export class CurrencyColumnTypeModifier extends BaseColumnTypeModifier<CurrencyF
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
   date(): void {
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
   }
@@ -44,7 +49,7 @@ export class CurrencyColumnTypeModifier extends BaseColumnTypeModifier<CurrencyF
     this.castTo('bool', newColumn, this.column)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   tree(): void {
     throw new Error('Method not implemented.')

@@ -18,6 +18,7 @@ import type {
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
   IdField as CoreIdField,
+  JsonField as CoreJsonField,
   LookupField as CoreLookupField,
   MultiSelectField as CoreMultiSelectField,
   NumberField as CoreNumberField,
@@ -48,6 +49,7 @@ import {
   EmailField,
   Field,
   IdField,
+  JsonField,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -118,6 +120,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   email(value: CoreEmailField): void {
     const field = new EmailField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  json(value: CoreJsonField): void {
+    const field = new JsonField(this.table, value)
 
     this.em.persist(field)
   }
@@ -194,7 +202,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
       field.symmetricReferenceField = this.em.getReference(ReferenceField, value.symmetricReferenceFieldId.value)
     }
 
-    const adjacencyListTable = new AdjacencyListTable(this.table.id, value)
+    const adjacencyListTable = AdjacencyListTable.fromField(this.table.id, value)
 
     const queries = adjacencyListTable.getCreateTableSqls(this.em.getKnex())
 

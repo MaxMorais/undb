@@ -30,6 +30,7 @@ import type {
   IDateRangeFieldQuerySchema,
   IEmailFieldQuerySchema,
   IIdFieldQuerySchema,
+  IJsonFieldQuerySchema,
   ILookupFieldQuerySchema,
   IMultiSelectFieldQuerySchema,
   INumberFieldQuerySchema,
@@ -61,6 +62,7 @@ import {
   DateRangeField as CoreDateRangeField,
   EmailField as CoreEmailField,
   IdField as CoreIdField,
+  JsonField as CoreJsonField,
   LookupField as CoreLookupField,
   MultiSelectField as CoreMultiSelectField,
   NumberField as CoreNumberField,
@@ -343,6 +345,31 @@ export class EmailField extends Field {
       id: this.id,
       name: this.name,
       type: 'email',
+      description: this.description,
+      required: !!this.required,
+      display: !!this.display,
+    }
+  }
+}
+
+@Entity({ discriminatorValue: 'json' })
+export class JsonField extends Field {
+  toDomain(): CoreJsonField {
+    return CoreJsonField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      type: 'json',
+      description: this.description,
+      required: !!this.required,
+      display: !!this.display,
+    })
+  }
+
+  toQuery(): IJsonFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'json',
       description: this.description,
       required: !!this.required,
       display: !!this.display,
@@ -763,6 +790,7 @@ export class ReferenceField extends Field {
         : this.symmetricReferenceField?.id,
       required: !!this.required,
       display: !!this.display,
+      bidirectional: !!this.isOwner,
     }
   }
 }
@@ -1071,6 +1099,7 @@ export type IField =
   | AutoIncrementField
   | StringField
   | EmailField
+  | JsonField
   | ColorField
   | NumberField
   | BoolField
@@ -1099,6 +1128,7 @@ export const fieldEntities = [
   AutoIncrementField,
   StringField,
   EmailField,
+  JsonField,
   ColorField,
   NumberField,
   BoolField,

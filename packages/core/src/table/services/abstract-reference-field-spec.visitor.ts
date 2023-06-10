@@ -16,6 +16,7 @@ import type {
   EmailField,
   IdField,
   IFieldVisitor,
+  JsonField,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -36,6 +37,7 @@ import type {
   WithFieldDisplay,
   WithFieldName,
   WithFieldRequirement,
+  WithForeignTableId,
   WithFormat,
   WithNewFieldType,
   WithNewOption,
@@ -104,6 +106,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   autoIncrement(field: AutoIncrementField): void {}
   string(field: StringField): void {}
   email(field: EmailField): void {}
+  json(field: JsonField): void {}
   color(field: ColorField): void {}
   number(field: NumberField): void {}
   bool(field: BoolField): void {}
@@ -149,6 +152,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   newField(s: WithNewField): void {
     s.field.accept(this)
   }
+  abstract foreignTableIdEqual(s: WithForeignTableId): void
   withoutField(s: WithoutField): void {}
   withDuplicatedField(s: WithDuplicatedField): void {}
   optionsEqual(s: WithOptions): void {}

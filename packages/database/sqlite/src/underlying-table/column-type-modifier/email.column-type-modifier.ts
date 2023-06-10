@@ -6,6 +6,7 @@ import {
   UnderlyingColorColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -30,6 +31,10 @@ export class EmailColumnTypeModifier extends BaseColumnTypeModifier<EmailField> 
   email(): void {
     throw new Error('Method not implemented.')
   }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
+    this.castTo('text', newColumn, this.column)
+  }
   date(): void {
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
   }
@@ -41,7 +46,7 @@ export class EmailColumnTypeModifier extends BaseColumnTypeModifier<EmailField> 
     this.castTo('bool', newColumn, this.column)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   tree(): void {
     throw new Error('Method not implemented.')

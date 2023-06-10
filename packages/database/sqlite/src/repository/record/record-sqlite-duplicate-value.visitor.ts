@@ -16,6 +16,7 @@ import type {
   Field,
   IFieldVisitor,
   IdField,
+  JsonField,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -134,6 +135,9 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
   email(field: EmailField): void {
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
+  json(field: JsonField): void {
+    this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
+  }
   color(field: ColorField): void {
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
@@ -202,8 +206,8 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
   reference(field: ReferenceField): void {
     if (!(this.from instanceof ReferenceField)) return
 
-    const oldTable = new AdjacencyListTable(this.tableId, this.from)
-    const adjacencyListTable = new AdjacencyListTable(this.tableId, field)
+    const oldTable = AdjacencyListTable.fromField(this.tableId, this.from)
+    const adjacencyListTable = AdjacencyListTable.fromField(this.tableId, field)
 
     const query = this.knex
       .queryBuilder()

@@ -9,6 +9,7 @@ import {
   UnderlyingColorColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -62,6 +63,10 @@ export class CollaboratorColumnTypeModifier extends BaseColumnTypeModifier<Colla
   email(): void {
     this.collaboratorToString(new UnderlyingEmailColumn(this.field.id.value, this.tableId), 'email')
   }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
   date(): void {
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
   }
@@ -72,7 +77,7 @@ export class CollaboratorColumnTypeModifier extends BaseColumnTypeModifier<Colla
     this.alterColumn(new UnderlyingBoolColumn(this.field.id.value, this.tableId), this.column)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   tree(): void {
     throw new Error('Method not implemented.')

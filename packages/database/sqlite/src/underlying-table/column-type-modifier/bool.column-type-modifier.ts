@@ -6,6 +6,7 @@ import {
   UnderlyingColorColumn,
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
@@ -31,6 +32,10 @@ export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
+    this.alterColumn(newColumn, this.column)
+  }
   date(): void {
     this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
   }
@@ -41,7 +46,7 @@ export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
     throw new Error('Method not implemented.')
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropColumn(this.column)
   }
   tree(): void {
     throw new Error('Method not implemented.')

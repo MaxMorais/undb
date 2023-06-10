@@ -6,6 +6,7 @@ import type {
   WithChartAggregateSpec,
   WithCurrencySymbol,
   WithDuplicatedField,
+  WithForeignTableId,
   WithNewFieldType,
   WithOption,
   WithReferenceFieldId,
@@ -70,6 +71,7 @@ import {
   EmailField,
   Field,
   IdField,
+  JsonField,
   LookupField,
   MultiSelectField,
   NumberField,
@@ -123,6 +125,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(ColorField, id)
       case 'email':
         return this.em.getReference(EmailField, id)
+      case 'json':
+        return this.em.getReference(JsonField, id)
       case 'select':
         return this.em.getReference(SelectField, id)
       case 'multi-select':
@@ -388,6 +392,11 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   symmetricReferenceFieldEqual(s: WithSymmetricReferenceField): void {
     const field = this.em.getReference(ReferenceField, s.fieldId)
     wrap(field).assign({ symmetricReferenceField: s.symmetricReferenceFieldId.value })
+    this.em.persist(field)
+  }
+  foreignTableIdEqual(s: WithForeignTableId): void {
+    const field = this.em.getReference(ReferenceField, s.fieldId)
+    field.foreignTable = this.em.getReference(Table, s.foreignTableId.value)
     this.em.persist(field)
   }
   ratingMaxEqual(s: WithRatingMax): void {

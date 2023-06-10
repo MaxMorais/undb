@@ -9,6 +9,7 @@ import {
   UnderlyingDateRangeFromColumn,
   UnderlyingDateRangeToColumn,
   UnderlyingEmailColumn,
+  UnderlyingJsonColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
@@ -71,6 +72,10 @@ export class DateRangeColumnTypeModifier extends BaseColumnTypeModifier<DateRang
     const newColumn = new UnderlyingEmailColumn(this.field.id.value, this.tableId)
     this.castFromDateRange(newColumn)
   }
+  json(): void {
+    const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
+    this.castFromDateRange(newColumn)
+  }
   date(): void {
     const newColumn = new UnderlyingStringColumn(this.field.id.value, this.tableId)
 
@@ -91,7 +96,7 @@ export class DateRangeColumnTypeModifier extends BaseColumnTypeModifier<DateRang
     this.castFromDateRange(newColumn)
   }
   reference(): void {
-    throw new Error('Method not implemented.')
+    this.dropDateRange()
   }
   tree(): void {
     throw new Error('Method not implemented.')
